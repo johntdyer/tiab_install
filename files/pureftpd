@@ -1,0 +1,76 @@
+#!/bin/bash
+#
+# pureftp           pureftp server (www.tropo.com)
+#
+# chkconfig: - 90 10
+# description: java servlet server (www.tropo.com)
+
+# Increase ulimit to avoid "Too many open files" exception
+ulimit -n 32768
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+# Source networking configuration.
+. /etc/sysconfig/network
+
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && exit 0
+
+pidfile=/var/run/pure-ftpd.pid
+
+RETVAL=0
+prog="pureftp"
+
+start() {
+  /opt/pureftpd/sbin/pure-authd -s /var/run/pure-authd.sock -r /opt/pureftpd/bin/pureftpd-auth.rb  -B
+
+  /opt/pureftpd/sbin/pure-ftpd \
+  --chrooteveryone \  --noanonymous \  --dontresolve \  --createhomedir \  --customerproof \  --passiveportrange 40000:45000 \  --forcepassiveip XXX.XXX.XXX.XXX  \  --login extauth:/var/run/pure-authd.sock \
+  -g ${pidfile} \
+  --noanonymous \  --altlog w3c:/var/log/pureftpd.log \  --maxclientsnumber 50 \  --maxclientsperip 8 \  --daemonize
+
+  PID=$!
+  RETVAL=$?
+  [ $RETVAL -ne 0 ] && failure $"pureftp startup"
+  [ $RETVAL -eq 0 ] && touch /var/lock/subsys/pureftp && success $"pureftp startup" && echo $PID >>${pidfile}
+  echo
+  return $RETVAL
+}
+stop() {
+  # Stop daemons.
+  killproc pure-authd
+  killproc pure-ftpd
+  RETVAL=$?
+  [ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/pureftp &
+  echo
+  return $RETVAL
+}
+
+restart() {
+  stop
+	sleep 2
+  start
+}
+
+# See how we were called.
+case "$1" in
+  start)
+    start
+  ;;
+  stop)
+    stop
+  ;;
+  restart)
+    restart
+  ;;
+  status)
+    status -p ${pidfile} /opt/pureftpd/sbin/pure-ftpd
+    RETVAL=$?
+  ;;
+  *)
+    echo $"Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?

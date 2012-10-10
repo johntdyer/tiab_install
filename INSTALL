@@ -1,0 +1,15 @@
+#!/bin/sh
+
+./pre.install.sh
+./bind.sh
+./activemq.sh
+./transfer.sh
+./prism.sh
+./provisioning.h2.sh
+./tropo.logger.sh
+./control.api.sh
+./tropo.sh
+./ruby.rvm.sh
+./pureftpd.sh
+./tropo.site.sh
+./post.install.sh 

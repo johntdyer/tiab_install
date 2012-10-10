@@ -1,0 +1,12 @@
+$ORIGIN .
+$TTL 120	; 2 minutes
+apps.tropo.local	IN SOA	apps.tropo.local. root.localhost. (
+				2012041888 ; serial
+				60         ; refresh (1 minute)
+				30         ; retry (30 seconds)
+				3600000    ; expire (5 weeks 6 days 16 hours)
+				60         ; minimum (1 minute)
+				)
+			NS	localhost.
+$ORIGIN apps.tropo.local.
+$TTL 30	; 30 seconds

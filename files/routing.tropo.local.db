@@ -1,0 +1,22 @@
+; BIND db file for routing.tropo.local managed by chef
+
+$ORIGIN .
+$TTL 120
+routing.tropo.local       IN      SOA     routing.tropo.local.      root.localhost. (
+                2012041753	    ; serial [yyyyMMddNN]
+                60		    ; refresh
+                30		    ; retry
+                3600000		    ; expiry
+                60		    ; minimum
+        );
+        
+
+                NS              localhost.
+
+$ORIGIN routing.tropo.local.
+
+_sip._udp.ppid410.routing.tropo.local.		120	SRV	 0 10	 5060	    local-server.routing.tropo.local.	 
+_sip._udp.ppid445.routing.tropo.local.		120	SRV	 0 10	 5060	    local-server.routing.tropo.local.	 
+_sip._udp.ppid461.routing.tropo.local.		120	SRV	 0 10	 5060	    local-server.routing.tropo.local.	 
+_sip._udp.ppid462.routing.tropo.local.		120	SRV	 0 10	 5060	    local-server.routing.tropo.local.	 
+local-server.routing.tropo.local.		30	A	       127.0.0.1

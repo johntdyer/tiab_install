@@ -1,0 +1,2 @@
+2012-04-30 14:52:22,872 DEBUG InactivityMonitor WriteCheck	org.apache.activemq.transport.InactivityMonitor	10000 ms elapsed since last write check.	
+2012-04-30 14:52:22,875 DEBUG InactivityMonitor ReadCheck	org.apache.activemq.transport.InactivityMonitor	29999 ms elapsed since last read check.	
